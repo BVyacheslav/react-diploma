@@ -1,17 +1,17 @@
 export const HomePage = () => {
   return <>
-    <section class="top-sales">
-      <h2 class="text-center">Хиты продаж!</h2>
-      <div class="preloader">
+    <section className="top-sales">
+      <h2 className="text-center">Хиты продаж!</h2>
+      <div className="preloader">
         <span></span>
         <span></span>
         <span></span>
         <span></span>
       </div>
     </section>
-    <section class="catalog">
-      <h2 class="text-center">Каталог</h2>
-      <div class="preloader">
+    <section className="catalog">
+      <h2 className="text-center">Каталог</h2>
+      <div className="preloader">
         <span></span>
         <span></span>
         <span></span>

@@ -8,9 +8,9 @@ function App() {
   return (
     <div className="App">
       <Header />
-      <main class="container">
-        <div class="row">
-          <div class="col">
+      <main className="container">
+        <div className="row">
+          <div className="col">
             <Banner />
             <Routes>
               <Route path="/" exact element={<HomePage />} />
