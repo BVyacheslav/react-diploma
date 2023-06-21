@@ -11,8 +11,8 @@ export const catalogApi = createApi({
       query: () => `categories`,
     }),
     getItems: build.query({
-      query: (categoryId = 0) => `items?categoryId=${categoryId}`,
-    })
+      query: (categoryId) => categoryId ? `items?categoryId=${categoryId}` : `items`,
+    }),
   })
 });
 

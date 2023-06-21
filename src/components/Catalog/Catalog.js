@@ -3,12 +3,12 @@ import { useState } from "react";
 import { useGetCategoriesQuery, useGetItemsQuery } from "../../store";
 
 export function Catalog() {
-  const { data: items = [], isLoading } = useGetItemsQuery();
+  const [selectedCategory, setSelectedCategory] = useState(0);
+  const { data: items = [], isLoading } = useGetItemsQuery(selectedCategory);
   const { data: categories = [] } = useGetCategoriesQuery();
-  const [selectedCategory, setSelectedCategory] = useState('Все');
 
   const handleChangeCategory = (e) => {
-    setSelectedCategory(e.target.text)
+    setSelectedCategory(Number(e.target.id))
   }
 
   return (
@@ -17,16 +17,20 @@ export function Catalog() {
       <ul className="catalog-categories nav justify-content-center">
         <li className="nav-item">
           <Link
-            className={selectedCategory === 'Все' ? "nav-link active" : "nav-link"}
-            onClick={handleChangeCategory}
-          >Все</Link>
+            id="0"
+            className={selectedCategory === 0 ? "nav-link active" : "nav-link"}
+            onClick={handleChangeCategory}>
+            Все
+          </Link>
         </li>
         {categories.map(category =>
           <li className="nav-item" key={category.id}>
             <Link
-              className={selectedCategory === category.title ? "nav-link active" : "nav-link"}
-              onClick={handleChangeCategory}
-            >{category.title}</Link>
+              id={category.id}
+              className={selectedCategory === category.id ? "nav-link active" : "nav-link"}
+              onClick={handleChangeCategory}>
+              {category.title}
+            </Link>
           </li>
         )}
       </ul>
