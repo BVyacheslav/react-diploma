@@ -6,8 +6,14 @@ export const catalogApi = createApi({
   endpoints: (build) => ({
     getTopSales: build.query({
       query: () => `top-sales`,
+    }),
+    getCategories: build.query({
+      query: () => `categories`,
+    }),
+    getItems: build.query({
+      query: (categoryId = 0) => `items?categoryId=${categoryId}`,
     })
   })
 });
 
-export const { useGetTopSalesQuery } = catalogApi;
+export const { useGetTopSalesQuery, useGetItemsQuery, useGetCategoriesQuery } = catalogApi;
