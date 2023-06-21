@@ -1,12 +1,35 @@
 import { Link } from "react-router-dom";
-import { useGetItemsQuery } from "../../store";
+import { useState } from "react";
+import { useGetCategoriesQuery, useGetItemsQuery } from "../../store";
 
 export function Catalog() {
   const { data: items = [], isLoading } = useGetItemsQuery();
+  const { data: categories = [] } = useGetCategoriesQuery();
+  const [selectedCategory, setSelectedCategory] = useState('Все');
+
+  const handleChangeCategory = (e) => {
+    setSelectedCategory(e.target.text)
+  }
 
   return (
     <section className="catalog">
       <h2 className="text-center">Каталог</h2>
+      <ul className="catalog-categories nav justify-content-center">
+        <li className="nav-item">
+          <Link
+            className={selectedCategory === 'Все' ? "nav-link active" : "nav-link"}
+            onClick={handleChangeCategory}
+          >Все</Link>
+        </li>
+        {categories.map(category =>
+          <li className="nav-item" key={category.id}>
+            <Link
+              className={selectedCategory === category.title ? "nav-link active" : "nav-link"}
+              onClick={handleChangeCategory}
+            >{category.title}</Link>
+          </li>
+        )}
+      </ul>
       {isLoading ?
         <div className="preloader">
           <span></span>
