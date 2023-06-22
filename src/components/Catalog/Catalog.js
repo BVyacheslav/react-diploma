@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useGetCategoriesQuery, useGetItemsQuery } from "../../store";
 
-export function Catalog() {
+export function Catalog({searchPanel = false}) {
   const [selectedCategory, setSelectedCategory] = useState(0);
   const { data: items = [], isLoading } = useGetItemsQuery(selectedCategory);
   const { data: categories = [] } = useGetCategoriesQuery();
@@ -14,6 +14,9 @@ export function Catalog() {
   return (
     <section className="catalog">
       <h2 className="text-center">Каталог</h2>
+      {searchPanel && <form className="catalog-search-form form-inline">
+          <input className="form-control" placeholder="Поиск" />
+        </form>}
       <ul className="catalog-categories nav justify-content-center">
         <li className="nav-item">
           <Link
