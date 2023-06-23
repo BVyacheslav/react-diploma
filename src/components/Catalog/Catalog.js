@@ -6,16 +6,17 @@ export function Catalog({ searchPanel = false }) {
   const [selectedCategory, setSelectedCategory] = useState(0);
   const [offset, setOffset] = useState(0);
   const [searchValue, setSearchValue] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
   const [items, setItems] = useState([]);
   const [isLoadMore, setIsLoadMore] = useState(true);
   const { data: categories = [] } = useGetCategoriesQuery();
 
-  const { data: currentItems = [], isLoading: isLoading } = useGetItemsQuery(`items?categoryId=${selectedCategory}&offset=${offset}&q=${searchValue}`);
-  const { data: nextItems = [] } = useGetItemsQuery(`items?categoryId=${selectedCategory}&offset=${offset + 6}&q=${searchValue}`);
+  const { data: currentItems = [], isLoading: isLoading } = useGetItemsQuery(`items?categoryId=${selectedCategory}&offset=${offset}&q=${searchQuery}`);
+  const { data: nextItems = [] } = useGetItemsQuery(`items?categoryId=${selectedCategory}&offset=${offset + 6}&q=${searchQuery}`);
 
   useEffect(() => {
     let newItems = [];
-    if (items.length === 0 || searchValue) {
+    if (items.length === 0) {
       newItems = [...currentItems];
     } else {
       newItems = [...items, ...nextItems];
@@ -38,14 +39,19 @@ export function Catalog({ searchPanel = false }) {
   }
 
   const handleChange = (e) => {
-    if (e.target.value === '') setItems([]);
     setSearchValue(e.target.value);
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setItems([]);
+    setSearchQuery(searchValue);
   }
 
   return (
     <section className="catalog">
       <h2 className="text-center">Каталог</h2>
-      {searchPanel && <form className="catalog-search-form form-inline">
+      {searchPanel && <form className="catalog-search-form form-inline" onSubmit={handleSubmit}>
         <input className="form-control" placeholder="Поиск" value={searchValue} onChange={handleChange} />
       </form>}
       <ul className="catalog-categories nav justify-content-center">
