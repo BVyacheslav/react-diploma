@@ -5,30 +5,31 @@ import { useGetCategoriesQuery, useGetItemsQuery } from "../../store";
 export function Catalog({ searchPanel = false }) {
   const [selectedCategory, setSelectedCategory] = useState(0);
   const [offset, setOffset] = useState(0);
+  const [searchValue, setSearchValue] = useState('');
   const [items, setItems] = useState([]);
   const [isLoadMore, setIsLoadMore] = useState(true);
   const { data: categories = [] } = useGetCategoriesQuery();
 
-  const { data: currentItems = [], isLoading: isLoading } = useGetItemsQuery(`items?categoryId=${selectedCategory}&offset=${offset}`);
-  const { data: nextItems = [] } = useGetItemsQuery(`items?categoryId=${selectedCategory}&offset=${offset + 6}`);
+  const { data: currentItems = [], isLoading: isLoading } = useGetItemsQuery(`items?categoryId=${selectedCategory}&offset=${offset}&q=${searchValue}`);
+  const { data: nextItems = [] } = useGetItemsQuery(`items?categoryId=${selectedCategory}&offset=${offset + 6}&q=${searchValue}`);
 
   useEffect(() => {
     let newItems = [];
-    if (items.length === 0) {
+    if (items.length === 0 || searchValue) {
       newItems = [...currentItems];
     } else {
       newItems = [...items, ...nextItems];
     }
     setItems(newItems);
-  }, [currentItems])
+  }, [currentItems]);
 
   useEffect(() => {
     nextItems.length === 0 ? setIsLoadMore(false) : setIsLoadMore(true);
-  }, [nextItems])
+  }, [nextItems]);
 
   const handleChangeCategory = (e) => {
-    setItems([])
-    setOffset(0)
+    setItems([]);
+    setOffset(0);
     setSelectedCategory(Number(e.target.id));
   }
 
@@ -36,11 +37,16 @@ export function Catalog({ searchPanel = false }) {
     setOffset(offset + 6);
   }
 
+  const handleChange = (e) => {
+    if (e.target.value === '') setItems([]);
+    setSearchValue(e.target.value);
+  }
+
   return (
     <section className="catalog">
       <h2 className="text-center">Каталог</h2>
       {searchPanel && <form className="catalog-search-form form-inline">
-        <input className="form-control" placeholder="Поиск" />
+        <input className="form-control" placeholder="Поиск" value={searchValue} onChange={handleChange} />
       </form>}
       <ul className="catalog-categories nav justify-content-center">
         <li className="nav-item">
