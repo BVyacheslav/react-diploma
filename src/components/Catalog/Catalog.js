@@ -1,22 +1,47 @@
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useGetCategoriesQuery, useGetItemsQuery } from "../../store";
 
-export function Catalog({searchPanel = false}) {
+export function Catalog({ searchPanel = false }) {
   const [selectedCategory, setSelectedCategory] = useState(0);
-  const { data: items = [], isLoading } = useGetItemsQuery(selectedCategory);
+  const [offset, setOffset] = useState(0);
+  const [items, setItems] = useState([]);
+  const [isLoadMore, setIsLoadMore] = useState(true);
   const { data: categories = [] } = useGetCategoriesQuery();
 
+  const { data: currentItems = [], isLoading: isLoading } = useGetItemsQuery(`items?categoryId=${selectedCategory}&offset=${offset}`);
+  const { data: nextItems = [] } = useGetItemsQuery(`items?categoryId=${selectedCategory}&offset=${offset + 6}`);
+
+  useEffect(() => {
+    let newItems = [];
+    if (items.length === 0) {
+      newItems = [...currentItems];
+    } else {
+      newItems = [...items, ...nextItems];
+    }
+    setItems(newItems);
+  }, [currentItems])
+
+  useEffect(() => {
+    nextItems.length === 0 ? setIsLoadMore(false) : setIsLoadMore(true);
+  }, [nextItems])
+
   const handleChangeCategory = (e) => {
-    setSelectedCategory(Number(e.target.id))
+    setItems([])
+    setOffset(0)
+    setSelectedCategory(Number(e.target.id));
+  }
+
+  const handleLoadMore = () => {
+    setOffset(offset + 6);
   }
 
   return (
     <section className="catalog">
       <h2 className="text-center">Каталог</h2>
       {searchPanel && <form className="catalog-search-form form-inline">
-          <input className="form-control" placeholder="Поиск" />
-        </form>}
+        <input className="form-control" placeholder="Поиск" />
+      </form>}
       <ul className="catalog-categories nav justify-content-center">
         <li className="nav-item">
           <Link
@@ -37,7 +62,7 @@ export function Catalog({searchPanel = false}) {
           </li>
         )}
       </ul>
-      {isLoading ?
+      {isLoading && offset === 0 ?
         <div className="preloader">
           <span></span>
           <span></span>
@@ -45,22 +70,36 @@ export function Catalog({searchPanel = false}) {
           <span></span>
         </div>
         :
-        <div className="row">
-          {items.map(product => (
-            <div key={product.id} className="col-4">
-              <div className="card">
-                <img src={product.images[0]}
-                  className="card-img-top img-fluid" alt={product.title} />
-                <div className="card-body">
-                  <p className="card-text">{product.title}</p>
-                  <p className="card-text">{product.price} руб.</p>
-                  <Link to="/products/1.html" className="btn btn-outline-primary">Заказать</Link>
+        <>
+          <div className="row">
+            {items?.map(product => (
+              <div key={product.id} className="col-4">
+                <div className="card">
+                  <img src={product.images[0]}
+                    className="card-img-top img-fluid" alt={product.title} />
+                  <div className="card-body">
+                    <p className="card-text">{product.title}</p>
+                    <p className="card-text">{product.price} руб.</p>
+                    <Link to="/products/1.html" className="btn btn-outline-primary">Заказать</Link>
+                  </div>
                 </div>
               </div>
+            ))
+            }
+          </div>
+          {isLoading && offset !== 0 ?
+            <div className="preloader">
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
             </div>
-          ))
+            : isLoadMore &&
+            <div className="text-center">
+              <button className="btn btn-outline-primary" onClick={handleLoadMore}>Загрузить ещё</button>
+            </div>
           }
-        </div>
+        </>
       }
     </section>
   );
