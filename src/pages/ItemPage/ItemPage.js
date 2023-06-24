@@ -8,6 +8,7 @@ export const ItemPage = () => {
   const { data: item = {}, isLoading } = useGetItemByIdQuery(selectedItemId);
 
   const [selectedSize, setSelectedSize] = useState('');
+  const [itemCount, setItemCount] = useState(1);
 
   const handleChangeSelectedSize = (e) => {
     setSelectedSize(e.target.id);
@@ -59,25 +60,29 @@ export const ItemPage = () => {
                   </tr>
                 </tbody>
               </table>
-              <div className="text-center">
-                <p>Размеры в наличии:
-                  {item.sizes.map((size) => size.available &&
-                    <span
-                      className={selectedSize === size.size ? "catalog-item-size selected" : "catalog-item-size"}
-                      id={size.size}
-                      key={size.size}
-                      onClick={handleChangeSelectedSize}>
-                      {size.size}
-                    </span>)}
-                </p>
-                <p>Количество: <span className="btn-group btn-group-sm pl-2">
-                  <button className="btn btn-secondary">-</button>
-                  <span className="btn btn-outline-primary">1</span>
-                  <button className="btn btn-secondary">+</button>
-                </span>
-                </p>
-              </div>
-              <button className="btn btn-danger btn-block btn-lg">В корзину</button>
+              {item.sizes.some((size) => size.available === true) &&
+                <>
+                  <div className="text-center">
+                    <p>Размеры в наличии:
+                      {item.sizes.map((size) => size.available &&
+                        <span
+                          className={selectedSize === size.size ? "catalog-item-size selected" : "catalog-item-size"}
+                          id={size.size}
+                          key={size.size}
+                          onClick={handleChangeSelectedSize}>
+                          {size.size}
+                        </span>)}
+                    </p>
+                    <p>Количество: <span className="btn-group btn-group-sm pl-2">
+                      <button className="btn btn-secondary" onClick={() => itemCount > 1 && setItemCount(itemCount - 1)}>-</button>
+                      <span className="btn btn-outline-primary">{itemCount}</span>
+                      <button className="btn btn-secondary" onClick={() => itemCount < 10 && setItemCount(itemCount + 1)}>+</button>
+                    </span>
+                    </p>
+                  </div>
+                  <button className="btn btn-danger btn-block btn-lg" disabled={!selectedSize}>В корзину</button>
+                </>
+              }
             </div>
           </div>
         </section>
