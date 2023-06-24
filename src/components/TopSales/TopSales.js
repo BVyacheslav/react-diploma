@@ -1,8 +1,11 @@
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setSelectedItemId } from "../../store/catalogSlice";
 import { useGetTopSalesQuery } from "../../store";
 
 export function TopSales() {
   const { data: topSalesProducts = [], isLoading } = useGetTopSalesQuery();
+  const dispath = useDispatch();
 
   return (
     <>
@@ -26,7 +29,7 @@ export function TopSales() {
                     <div className="card-body">
                       <p className="card-text">{product.title}</p>
                       <p className="card-text">{product.price} руб.</p>
-                      <Link to="/products/1.html" className="btn btn-outline-primary">Заказать</Link>
+                      <Link to={`/catalog/${product.id}`} className="btn btn-outline-primary" onClick={() => dispath(setSelectedItemId(product.id))}>Заказать</Link>
                     </div>
                   </div>
                 </div>

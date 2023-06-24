@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { setSelectedItemId } from "../../store/catalogSlice";
 import { useGetCategoriesQuery, useGetItemsQuery } from "../../store";
 
 export function Catalog({ searchPanel = false }) {
@@ -10,6 +12,8 @@ export function Catalog({ searchPanel = false }) {
   const [items, setItems] = useState([]);
   const [isLoadMore, setIsLoadMore] = useState(true);
   const { data: categories = [] } = useGetCategoriesQuery();
+
+  const dispath = useDispatch();
 
   const { data: currentItems = [], isLoading: isLoading } = useGetItemsQuery(`items?categoryId=${selectedCategory}&offset=${offset}&q=${searchQuery}`);
   const { data: nextItems = [] } = useGetItemsQuery(`items?categoryId=${selectedCategory}&offset=${offset + 6}&q=${searchQuery}`);
@@ -84,15 +88,15 @@ export function Catalog({ searchPanel = false }) {
         :
         <>
           <div className="row">
-            {items?.map(product => (
-              <div key={product.id} className="col-4">
+            {items?.map(item => (
+              <div key={item.id} className="col-4">
                 <div className="card">
-                  <img src={product.images[0]}
-                    className="card-img-top img-fluid" alt={product.title} />
+                  <img src={item.images[0]}
+                    className="card-img-top img-fluid" alt={item.title} />
                   <div className="card-body">
-                    <p className="card-text">{product.title}</p>
-                    <p className="card-text">{product.price} руб.</p>
-                    <Link to="/products/1.html" className="btn btn-outline-primary">Заказать</Link>
+                    <p className="card-text">{item.title}</p>
+                    <p className="card-text">{item.price} руб.</p>
+                    <Link to={`/catalog/${item.id}`} className="btn btn-outline-primary" onClick={() => dispath(setSelectedItemId(item.id))}>Заказать</Link>
                   </div>
                 </div>
               </div>

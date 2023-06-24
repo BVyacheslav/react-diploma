@@ -1,7 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import './App.css';
 import { Footer, Header, Banner } from './components';
-import { AboutPage, CartPage, CatalogPage, ContactsPage, HomePage, Page404 } from "./pages";
+import { AboutPage, CartPage, CatalogPage, ContactsPage, HomePage, ItemPage, Page404 } from "./pages";
 
 function App() {
 
@@ -18,6 +18,7 @@ function App() {
               <Route path="/about" element={<AboutPage />} />
               <Route path="/contacts" element={<ContactsPage />} />
               <Route path="/cart" element={<CartPage />} />
+              <Route path="/catalog/:itemId" element={<ItemPage />} />
               <Route path="/404" element={<Page404 />} />
             </Routes>
           </div>
