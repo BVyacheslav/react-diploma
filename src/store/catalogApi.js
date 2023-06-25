@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 export const catalogApi = createApi({
   reducerPath: 'catalogApi',
-  baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:7070/api/' }),
+  baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:7074/api' }),
   endpoints: (build) => ({
     getTopSales: build.query({
       query: () => `top-sales`,
@@ -16,7 +16,14 @@ export const catalogApi = createApi({
     getItemById: build.query({
       query: (itemId) => `items/${itemId}`,
     }),
+    postOrder: build.mutation({
+      query: (body) => ({
+        url: `/order`,
+        method: "POST",
+        body,
+      }),
+    }),
   })
 });
 
-export const { useGetTopSalesQuery, useGetItemsQuery, useGetCategoriesQuery, useGetItemByIdQuery } = catalogApi;
+export const { useGetTopSalesQuery, useGetItemsQuery, useGetCategoriesQuery, useGetItemByIdQuery, usePostOrderMutation } = catalogApi;

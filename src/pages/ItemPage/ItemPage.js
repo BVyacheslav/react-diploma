@@ -23,7 +23,7 @@ export const ItemPage = () => {
   const handleAddItemToCart = (item) => () => {
     const { id, color, title, price } = item;
     dispath(addItemToCart({ id, title, color, price, selectedSize, itemCount }));
-    dispath(setTotalCost(price * itemCount))
+    dispath(setTotalCost(price * itemCount));
   }
 
   return (
