@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 
 export function Header() {
   return (
@@ -6,9 +6,9 @@ export function Header() {
       <div className="row">
         <div className="col">
           <nav className="navbar navbar-expand-sm navbar-light bg-light">
-            <a className="navbar-brand" href="/">
+            <Link className="nav-link" to="/">
               <img src="/img/header-logo.png" alt="Bosa Noga" />
-            </a>
+            </Link>
             <div className="collapse navbar-collapse" id="navbarMain">
               <ul className="navbar-nav mr-auto">
                 <li className="nav-item">

@@ -1,4 +1,19 @@
+import { useSelector, useDispatch } from "react-redux";
+import { deleteItemFromCart, setTotalCost } from "../../store/catalogSlice";
+
 export const CartPage = () => {
+
+  const cartItems = useSelector((state) => state.catalog.cartItems);
+  const totalCost = useSelector((state) => state.catalog.totalCost);
+
+  const dispath = useDispatch();
+
+  const handleDeleteFromCart = (item) => () => {
+    const { id, price, itemCount } = item;
+    dispath(deleteItemFromCart(id));
+    dispath(setTotalCost(-price * itemCount))
+  }
+
   return <>
     <section className="cart">
       <h2 className="text-center">Корзина</h2>
@@ -15,18 +30,20 @@ export const CartPage = () => {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td scope="row">1</td>
-            <td><a href="/products/1.html">Босоножки 'MYER'</a></td>
-            <td>18 US</td>
-            <td>1</td>
-            <td>34 000 руб.</td>
-            <td>34 000 руб.</td>
-            <td><button className="btn btn-outline-danger btn-sm">Удалить</button></td>
-          </tr>
+          {cartItems.map((item, i) => (
+            <tr key={item.id}>
+              <td scope="row">{i + 1}</td>
+              <td><a href="/products/1.html">{item.title}</a></td>
+              <td>{item.selectedSize}</td>
+              <td>{item.itemCount}</td>
+              <td>{item.price}</td>
+              <td>{item.price}</td>
+              <td><button className="btn btn-outline-danger btn-sm" onClick={handleDeleteFromCart(item)}>Удалить</button></td>
+            </tr>
+          ))}
           <tr>
             <td colSpan="5" className="text-right">Общая стоимость</td>
-            <td>34 000 руб.</td>
+            <td>{totalCost} руб.</td>
           </tr>
         </tbody>
       </table>

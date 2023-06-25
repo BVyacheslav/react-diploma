@@ -1,5 +1,9 @@
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
+
+
+import { addItemToCart, setTotalCost } from "../../store/catalogSlice";
 import { useGetItemByIdQuery } from "../../store";
 
 export const ItemPage = () => {
@@ -7,11 +11,19 @@ export const ItemPage = () => {
   const selectedItemId = useSelector((state) => state.catalog.selectedItemId);
   const { data: item = {}, isLoading } = useGetItemByIdQuery(selectedItemId);
 
+  const dispath = useDispatch();
+
   const [selectedSize, setSelectedSize] = useState('');
   const [itemCount, setItemCount] = useState(1);
 
   const handleChangeSelectedSize = (e) => {
     setSelectedSize(e.target.id);
+  }
+
+  const handleAddItemToCart = (item) => () => {
+    const { id, color, title, price } = item;
+    dispath(addItemToCart({ id, title, color, price, selectedSize, itemCount }));
+    dispath(setTotalCost(price * itemCount))
   }
 
   return (
@@ -80,7 +92,14 @@ export const ItemPage = () => {
                     </span>
                     </p>
                   </div>
-                  <button className="btn btn-danger btn-block btn-lg" disabled={!selectedSize}>В корзину</button>
+                  <Link to="/cart">
+                    <button
+                      className="btn btn-danger btn-block btn-lg"
+                      disabled={!selectedSize}
+                      onClick={handleAddItemToCart(item)}>
+                      В корзину
+                    </button>
+                  </Link>
                 </>
               }
             </div>
