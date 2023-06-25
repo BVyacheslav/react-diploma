@@ -6,6 +6,8 @@ import { Link } from "react-router-dom";
 import { addItemToCart, setTotalCost } from "../../store/catalogSlice";
 import { useGetItemByIdQuery } from "../../store";
 
+import { Loader } from "../../components";
+
 export const ItemPage = () => {
 
   const selectedItemId = useSelector((state) => state.catalog.selectedItemId);
@@ -29,12 +31,7 @@ export const ItemPage = () => {
   return (
     <>
       {isLoading ?
-        <div className="preloader">
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-        </div>
+        <Loader />
         :
         <section className="catalog-item">
           <h2 className="text-center">{item.title}</h2>

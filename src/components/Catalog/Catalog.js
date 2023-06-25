@@ -86,12 +86,7 @@ export function Catalog({ searchPanel = false }) {
         )}
       </ul>
       {isFetching && offset === 0 ?
-        <div className="preloader">
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-        </div>
+        <Loader />
         :
         <>
           <div className="row">
