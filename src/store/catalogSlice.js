@@ -36,8 +36,12 @@ const catalogSlice = createSlice({
     setSearchQuery(state, action) {
       state.searchQuery = action.payload;
     },
+    setClearCart(state) {
+      state.cartItems = [];
+      state.totalCost = 0;
+    }
   },
 })
 
-export const { setSelectedItemId, addItemToCart, deleteItemFromCart, setTotalCost, setSearchValue, setSearchQuery } = catalogSlice.actions;
+export const { setSelectedItemId, addItemToCart, deleteItemFromCart, setTotalCost, setSearchValue, setSearchQuery, setClearCart } = catalogSlice.actions;
 export const catalogReducer = catalogSlice.reducer;

@@ -1,6 +1,7 @@
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import { deleteItemFromCart, setTotalCost } from "../../store/catalogSlice";
+import { useEffect } from "react";
+import { deleteItemFromCart, setTotalCost, setClearCart } from "../../store/catalogSlice";
 import { usePostOrderMutation } from "../../store";
 import { useState } from "react";
 
@@ -15,6 +16,8 @@ export const CartPage = () => {
   const [addressValue, setAddressValue] = useState('');
 
   const dispath = useDispatch();
+
+  useEffect(() => { isSuccess && dispath(setClearCart()) }, [isSuccess]);
 
   const handleDeleteFromCart = (item) => () => {
     const { id, price, itemCount, selectedSize } = item;
