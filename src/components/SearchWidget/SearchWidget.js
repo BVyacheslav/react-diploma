@@ -39,9 +39,9 @@ export function SearchWidget() {
       </div>
       <form
         data-id="search-form"
-        class={`header-controls-search-form form-inline ${!isSearchOpen && 'invisible'}`}
+        className={`header-controls-search-form form-inline ${!isSearchOpen && 'invisible'}`}
         onSubmit={handleSubmit}>
-        <input class="form-control" placeholder="Поиск" value={searchValue} onChange={handleChange} />
+        <input className="form-control" placeholder="Поиск" value={searchValue} onChange={handleChange} />
       </form>
     </>
   );
