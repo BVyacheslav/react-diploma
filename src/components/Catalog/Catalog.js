@@ -50,7 +50,7 @@ export function Catalog({ searchPanel = false }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     setItems([]);
-    setSearchQuery(searchValue);
+    dispath(setSearchQuery(searchValue));
   }
 
   return (
