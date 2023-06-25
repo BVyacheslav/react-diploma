@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { setSelectedItemId, setSearchValue, setSearchQuery } from "../../store/catalogSlice";
 import { useGetCategoriesQuery, useGetItemsQuery } from "../../store";
+import { Loader } from "../../components";
 
 export function Catalog({ searchPanel = false }) {
   const [selectedCategory, setSelectedCategory] = useState(0);
@@ -105,12 +106,7 @@ export function Catalog({ searchPanel = false }) {
             }
           </div>
           {isLoading && offset !== 0 ?
-            <div className="preloader">
-              <span></span>
-              <span></span>
-              <span></span>
-              <span></span>
-            </div>
+            <Loader />
             : isLoadMore &&
             <div className="text-center">
               <button className="btn btn-outline-primary" onClick={handleLoadMore}>Загрузить ещё</button>

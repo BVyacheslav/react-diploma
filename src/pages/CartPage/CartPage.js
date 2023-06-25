@@ -1,9 +1,10 @@
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+
 import { deleteItemFromCart, setTotalCost, setClearCart } from "../../store/catalogSlice";
 import { usePostOrderMutation } from "../../store";
-import { useState } from "react";
+import { Loader } from "../../components";
 
 export const CartPage = () => {
 
@@ -88,12 +89,9 @@ export const CartPage = () => {
             <label className="form-check-label" htmlFor="agreement">Согласен с правилами доставки</label>
           </div>
           <button type="submit" className="btn btn-outline-secondary" disabled={isLoading}>{isLoading ? 'Оформление...' : 'Оформить'}</button>
-          {isLoading && <div className="preloader">
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-          </div>}
+          {isLoading &&
+            <Loader />
+          }
           {isSuccess && <div style={{ color: 'green' }}>Заказ оформлен успешно</div>}
           {isError && <div style={{ color: 'red' }}>Ошибка при оформлении заказа</div>}
         </form>

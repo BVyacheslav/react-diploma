@@ -1,7 +1,9 @@
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
+
 import { setSelectedItemId } from "../../store/catalogSlice";
 import { useGetTopSalesQuery } from "../../store";
+import { Loader } from "../../components";
 
 export function TopSales() {
   const { data: topSalesProducts = [], isLoading } = useGetTopSalesQuery();
@@ -13,12 +15,7 @@ export function TopSales() {
         <section className="top-sales">
           <h2 className="text-center">Хиты продаж!</h2>
           {isLoading ?
-            <div className="preloader">
-              <span></span>
-              <span></span>
-              <span></span>
-              <span></span>
-            </div>
+            <Loader />
             :
             <div className="row">
               {topSalesProducts.map(product => (
