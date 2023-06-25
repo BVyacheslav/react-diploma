@@ -19,7 +19,7 @@ function App() {
               <Route path="/contacts" element={<ContactsPage />} />
               <Route path="/cart" element={<CartPage />} />
               <Route path="/catalog/:itemId" element={<ItemPage />} />
-              <Route path="/404" element={<Page404 />} />
+              <Route path="*" element={<Page404 />} />
             </Routes>
           </div>
         </div>
