@@ -1,4 +1,5 @@
 import { useSelector, useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
 import { deleteItemFromCart, setTotalCost } from "../../store/catalogSlice";
 
 export const CartPage = () => {
@@ -33,7 +34,8 @@ export const CartPage = () => {
           {cartItems.map((item, i) => (
             <tr key={item.id + item.selectedSize}>
               <td scope="row">{i + 1}</td>
-              <td><a href="/products/1.html">{item.title}</a></td>
+              {/* <td><a href="/products/1.html">{item.title}</a></td> */}
+              <td><Link to={`/catalog/${item.id}`}>{item.title}</Link></td>
               <td>{item.selectedSize}</td>
               <td>{item.itemCount}</td>
               <td>{item.price}</td>
