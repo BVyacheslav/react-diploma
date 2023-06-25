@@ -10,7 +10,7 @@ export function Catalog({ searchPanel = false }) {
   const [selectedCategory, setSelectedCategory] = useState(0);
   const [offset, setOffset] = useState(0);
   const [items, setItems] = useState([]);
-  const [isLoadMore, setIsLoadMore] = useState(true);
+  const [isLoadMore, setIsLoadMore] = useState(false);
 
   const { searchValue, searchQuery } = useSelector((state) => state.catalog);
 
@@ -18,7 +18,7 @@ export function Catalog({ searchPanel = false }) {
 
   const { data: categories = [] } = useGetCategoriesQuery();
   const { data: currentItems = [], isLoading: isLoading } = useGetItemsQuery(`items?categoryId=${selectedCategory}&offset=${offset}&q=${searchQuery}`);
-  const { data: nextItems = [] } = useGetItemsQuery(`items?categoryId=${selectedCategory}&offset=${offset + 6}&q=${searchQuery}`);
+  const { data: nextItems = [], isLoading: isLoadingNextItems } = useGetItemsQuery(`items?categoryId=${selectedCategory}&offset=${offset + 6}&q=${searchQuery}`);
 
   useEffect(() => {
     let newItems = [];
@@ -42,6 +42,7 @@ export function Catalog({ searchPanel = false }) {
 
   const handleLoadMore = () => {
     setOffset(offset + 6);
+    setIsLoadMore(false);
   }
 
   const handleChange = (e) => {
@@ -105,7 +106,7 @@ export function Catalog({ searchPanel = false }) {
             ))
             }
           </div>
-          {isLoading && offset !== 0 ?
+          {isLoadingNextItems ?
             <Loader />
             : isLoadMore &&
             <div className="text-center">
