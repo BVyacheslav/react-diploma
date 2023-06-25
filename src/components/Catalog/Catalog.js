@@ -17,8 +17,8 @@ export function Catalog({ searchPanel = false }) {
   const dispath = useDispatch();
 
   const { data: categories = [] } = useGetCategoriesQuery();
-  const { data: currentItems = [], isLoading: isLoading, isSuccess } = useGetItemsQuery(`items?categoryId=${selectedCategory}&offset=${offset}&q=${searchQuery}`);
-  const { data: nextItems = [], isLoading: isLoadingNextItems } = useGetItemsQuery(`items?categoryId=${selectedCategory}&offset=${offset + 6}&q=${searchQuery}`);
+  const { data: currentItems = [], isFetching: isFetching, isSuccess } = useGetItemsQuery(`items?categoryId=${selectedCategory}&offset=${offset}&q=${searchQuery}`);
+  const { data: nextItems = [], isFetching: isFetchingNextItems } = useGetItemsQuery(`items?categoryId=${selectedCategory}&offset=${offset + 6}&q=${searchQuery}`);
 
   useEffect(() => {
     if (isSuccess) {
@@ -85,7 +85,7 @@ export function Catalog({ searchPanel = false }) {
           </li>
         )}
       </ul>
-      {isLoading && offset === 0 ?
+      {isFetching && offset === 0 ?
         <div className="preloader">
           <span></span>
           <span></span>
@@ -110,7 +110,7 @@ export function Catalog({ searchPanel = false }) {
             ))
             }
           </div>
-          {isLoadingNextItems ?
+          {isFetchingNextItems ?
             <Loader />
             : isLoadMore &&
             <div className="text-center">
