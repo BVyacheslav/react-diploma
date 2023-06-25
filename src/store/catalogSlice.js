@@ -3,7 +3,9 @@ import { createSlice } from '@reduxjs/toolkit'
 const initialState = {
   selectedItemId: 0,
   cartItems: [],
-  totalCost: 0
+  totalCost: 0,
+  searchValue: '',
+  searchQuery: '',
 }
 
 const catalogSlice = createSlice({
@@ -27,9 +29,15 @@ const catalogSlice = createSlice({
     },
     setTotalCost(state, action) {
       state.totalCost = state.totalCost + action.payload;
-    }
+    },
+    setSearchValue(state, action) {
+      state.searchValue = action.payload;
+    },
+    setSearchQuery(state, action) {
+      state.searchQuery = action.payload;
+    },
   },
 })
 
-export const { setSelectedItemId, addItemToCart, deleteItemFromCart, setTotalCost } = catalogSlice.actions;
+export const { setSelectedItemId, addItemToCart, deleteItemFromCart, setTotalCost, setSearchValue, setSearchQuery } = catalogSlice.actions;
 export const catalogReducer = catalogSlice.reducer;

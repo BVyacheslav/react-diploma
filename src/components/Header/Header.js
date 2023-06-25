@@ -1,5 +1,6 @@
 import { NavLink, Link } from "react-router-dom";
 import { CartWidget } from "../CartWidget";
+import { SearchWidget } from "../SearchWidget";
 
 export function Header() {
   return (
@@ -27,9 +28,8 @@ export function Header() {
               </ul>
               <div>
                 <div className="header-controls-pics">
-                  <div data-id="search-expander" className="header-controls-pic header-controls-search"></div>
+                  <SearchWidget />
                   <CartWidget />
-
                 </div>
                 <form data-id="search-form" className="header-controls-search-form form-inline invisible">
                   <input className="form-control" placeholder="Поиск" />

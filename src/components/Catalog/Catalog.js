@@ -1,20 +1,21 @@
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { setSelectedItemId } from "../../store/catalogSlice";
+import { useDispatch, useSelector } from "react-redux";
+
+import { setSelectedItemId, setSearchValue, setSearchQuery } from "../../store/catalogSlice";
 import { useGetCategoriesQuery, useGetItemsQuery } from "../../store";
 
 export function Catalog({ searchPanel = false }) {
   const [selectedCategory, setSelectedCategory] = useState(0);
   const [offset, setOffset] = useState(0);
-  const [searchValue, setSearchValue] = useState('');
-  const [searchQuery, setSearchQuery] = useState('');
   const [items, setItems] = useState([]);
   const [isLoadMore, setIsLoadMore] = useState(true);
-  const { data: categories = [] } = useGetCategoriesQuery();
+
+  const { searchValue, searchQuery } = useSelector((state) => state.catalog);
 
   const dispath = useDispatch();
 
+  const { data: categories = [] } = useGetCategoriesQuery();
   const { data: currentItems = [], isLoading: isLoading } = useGetItemsQuery(`items?categoryId=${selectedCategory}&offset=${offset}&q=${searchQuery}`);
   const { data: nextItems = [] } = useGetItemsQuery(`items?categoryId=${selectedCategory}&offset=${offset + 6}&q=${searchQuery}`);
 
@@ -43,7 +44,7 @@ export function Catalog({ searchPanel = false }) {
   }
 
   const handleChange = (e) => {
-    setSearchValue(e.target.value);
+    dispath(setSearchValue(e.target.value));
   }
 
   const handleSubmit = (e) => {
