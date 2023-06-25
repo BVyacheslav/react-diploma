@@ -52,6 +52,8 @@ export function Catalog({ searchPanel = false }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     setItems([]);
+    setOffset(0);
+    setIsLoadMore(false);
     dispath(setSearchQuery(searchValue));
   }
 
