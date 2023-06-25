@@ -9,8 +9,8 @@ export const CartPage = () => {
   const dispath = useDispatch();
 
   const handleDeleteFromCart = (item) => () => {
-    const { id, price, itemCount } = item;
-    dispath(deleteItemFromCart(id));
+    const { id, price, itemCount, selectedSize } = item;
+    dispath(deleteItemFromCart({ id, selectedSize }));
     dispath(setTotalCost(-price * itemCount))
   }
 
@@ -31,13 +31,13 @@ export const CartPage = () => {
         </thead>
         <tbody>
           {cartItems.map((item, i) => (
-            <tr key={item.id}>
+            <tr key={item.id + item.selectedSize}>
               <td scope="row">{i + 1}</td>
               <td><a href="/products/1.html">{item.title}</a></td>
               <td>{item.selectedSize}</td>
               <td>{item.itemCount}</td>
               <td>{item.price}</td>
-              <td>{item.price}</td>
+              <td>{item.price * item.itemCount}</td>
               <td><button className="btn btn-outline-danger btn-sm" onClick={handleDeleteFromCart(item)}>Удалить</button></td>
             </tr>
           ))}

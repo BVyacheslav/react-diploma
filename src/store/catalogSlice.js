@@ -14,10 +14,16 @@ const catalogSlice = createSlice({
       state.selectedItemId = action.payload;
     },
     addItemToCart(state, action) {
-      state.cartItems.push(action.payload);
+      const itemIndex = state.cartItems.findIndex((item) => item.id === action.payload.id && item.selectedSize === action.payload.selectedSize);
+      if (itemIndex >= 0) {
+        state.cartItems[itemIndex].itemCount = state.cartItems[itemIndex].itemCount + action.payload.itemCount
+      } else {
+        state.cartItems.push(action.payload);
+      }
     },
     deleteItemFromCart(state, action) {
-      state.cartItems = state.cartItems.filter((item) => item.id !== action.payload)
+      const itemIndex = state.cartItems.findIndex((item) => item.id === action.payload.id && item.selectedSize === action.payload.selectedSize);
+      state.cartItems.splice(itemIndex, 1);
     },
     setTotalCost(state, action) {
       state.totalCost = state.totalCost + action.payload;
