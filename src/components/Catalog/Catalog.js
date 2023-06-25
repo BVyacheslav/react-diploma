@@ -17,17 +17,19 @@ export function Catalog({ searchPanel = false }) {
   const dispath = useDispatch();
 
   const { data: categories = [] } = useGetCategoriesQuery();
-  const { data: currentItems = [], isLoading: isLoading } = useGetItemsQuery(`items?categoryId=${selectedCategory}&offset=${offset}&q=${searchQuery}`);
+  const { data: currentItems = [], isLoading: isLoading, isSuccess } = useGetItemsQuery(`items?categoryId=${selectedCategory}&offset=${offset}&q=${searchQuery}`);
   const { data: nextItems = [], isLoading: isLoadingNextItems } = useGetItemsQuery(`items?categoryId=${selectedCategory}&offset=${offset + 6}&q=${searchQuery}`);
 
   useEffect(() => {
-    let newItems = [];
-    if (items.length === 0) {
-      newItems = [...currentItems];
-    } else {
-      newItems = [...items, ...nextItems];
+    if (isSuccess) {
+      let newItems = [];
+      if (items.length === 0) {
+        newItems = [...currentItems];
+      } else {
+        newItems = [...items, ...nextItems];
+      }
+      setItems(newItems);
     }
-    setItems(newItems);
   }, [currentItems]);
 
   useEffect(() => {
