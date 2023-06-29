@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
@@ -13,6 +13,12 @@ export function SearchWidget() {
 
   const dispath = useDispatch();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (pathname === '/catalog') {
+      setIsSearchOpen(false);
+    }
+  }, [pathname])
 
   const handleChange = (e) => {
     dispath(setSearchValue(e.target.value));
