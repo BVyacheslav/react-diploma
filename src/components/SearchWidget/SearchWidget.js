@@ -1,12 +1,15 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
 
 import { setSearchValue, setSearchQuery } from "../../store/catalogSlice";
 
 export function SearchWidget() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const { searchValue } = useSelector((state) => state.catalog);
+
+  const { pathname } = useLocation();
 
   const dispath = useDispatch();
   const navigate = useNavigate();
@@ -17,15 +20,11 @@ export function SearchWidget() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispath(setSearchQuery(searchValue));
-    navigate('/catalog');
-  }
-
-  const handleClick = () => {
     if (isSearchOpen && searchValue) {
       dispath(setSearchQuery(searchValue));
       navigate('/catalog');
-    } else {
+      setIsSearchOpen(false);
+    } else if (pathname !== '/catalog') {
       setIsSearchOpen(isSearchOpen ? false : true);
     }
   }
@@ -35,7 +34,7 @@ export function SearchWidget() {
       <div
         data-id="search-expander"
         className="header-controls-pic header-controls-search"
-        onClick={handleClick}>
+        onClick={handleSubmit}>
       </div>
       <form
         data-id="search-form"

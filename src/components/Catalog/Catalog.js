@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
 
 import { setSelectedItemId, setSearchValue, setSearchQuery } from "../../store/catalogSlice";
 import { useGetCategoriesQuery, useGetItemsQuery } from "../../store";
@@ -14,11 +15,20 @@ export function Catalog({ searchPanel = false }) {
 
   const { searchValue, searchQuery } = useSelector((state) => state.catalog);
 
+  const { pathname } = useLocation();
+
   const dispath = useDispatch();
 
   const { data: categories = [] } = useGetCategoriesQuery();
   const { data: currentItems = [], isFetching: isFetching, isSuccess } = useGetItemsQuery(`items?categoryId=${selectedCategory}&offset=${offset}&q=${searchQuery}`);
   const { data: nextItems = [], isFetching: isFetchingNextItems } = useGetItemsQuery(`items?categoryId=${selectedCategory}&offset=${offset + 6}&q=${searchQuery}`);
+
+  useEffect(() => {
+    if (pathname === '/') {
+      dispath(setSearchValue(''));
+      dispath(setSearchQuery(''));
+    }
+  }, []);
 
   useEffect(() => {
     if (isSuccess) {
@@ -36,6 +46,17 @@ export function Catalog({ searchPanel = false }) {
     nextItems.length === 0 ? setIsLoadMore(false) : setIsLoadMore(true);
   }, [nextItems]);
 
+  useEffect(() => {
+    if (searchValue === '' && searchQuery) {
+      setItems([]);
+      setOffset(0);
+      setIsLoadMore(false);
+      if (items.length === 0) {
+        dispath(setSearchQuery(''));
+      }
+    }
+  }, [searchValue, items]);
+
   const handleChangeCategory = (e) => {
     setItems([]);
     setOffset(0);
@@ -49,22 +70,16 @@ export function Catalog({ searchPanel = false }) {
 
   const handleChange = (e) => {
     dispath(setSearchValue(e.target.value));
-    if(e.target.value === '') {
-      setItems([]);
-      setOffset(0);
-      setIsLoadMore(false);
-      dispath(setSearchQuery(searchValue));
-    } 
   }
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if(searchValue && searchValue !== searchQuery) {
+    if (searchValue && searchValue !== searchQuery) {
       setItems([]);
       setOffset(0);
       setIsLoadMore(false);
       dispath(setSearchQuery(searchValue));
-    } 
+    }
   }
 
   return (
