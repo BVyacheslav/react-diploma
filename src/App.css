@@ -306,3 +306,20 @@ h2, .h2 {
   background-color: #727e86;
   border-color: #727e86;
 }
+
+.card {
+  height: 40vh;
+  min-height: 300px;
+  margin-bottom: 1rem;
+}
+
+.card-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.card-img-top {
+  height: 20vh;
+  object-fit: contain;
+}

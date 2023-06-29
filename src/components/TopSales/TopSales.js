@@ -24,8 +24,10 @@ export function TopSales() {
                     <img src={product.images[0]}
                       className="card-img-top img-fluid" alt={product.title} />
                     <div className="card-body">
-                      <p className="card-text">{product.title}</p>
-                      <p className="card-text">{product.price} руб.</p>
+                      <div>
+                        <p className="card-text">{product.title}</p>
+                        <p className="card-text">{product.price} руб.</p>
+                      </div>
                       <Link to={`/catalog/${product.id}`} className="btn btn-outline-primary" onClick={() => dispath(setSelectedItemId(product.id))}>Заказать</Link>
                     </div>
                   </div>
