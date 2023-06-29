@@ -49,14 +49,22 @@ export function Catalog({ searchPanel = false }) {
 
   const handleChange = (e) => {
     dispath(setSearchValue(e.target.value));
+    if(e.target.value === '') {
+      setItems([]);
+      setOffset(0);
+      setIsLoadMore(false);
+      dispath(setSearchQuery(searchValue));
+    } 
   }
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setItems([]);
-    setOffset(0);
-    setIsLoadMore(false);
-    dispath(setSearchQuery(searchValue));
+    if(searchValue && searchValue !== searchQuery) {
+      setItems([]);
+      setOffset(0);
+      setIsLoadMore(false);
+      dispath(setSearchQuery(searchValue));
+    } 
   }
 
   return (
